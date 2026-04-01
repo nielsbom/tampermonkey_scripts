@@ -1,7 +1,8 @@
 // ==UserScript==
-// @name        outlook.office.com/mail
+// @name        Outlook web mail
 // @namespace   Violentmonkey Scripts
 // @match       https://outlook.office.com/mail/*
+// @match       https://outlook.cloud.microsoft/mail/*
 // @grant       none
 // @version     1.0
 // @author      -
@@ -28,20 +29,26 @@
   function setInputValueAndSubmit(input, value) {
     input.focus();
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-      window.HTMLInputElement.prototype, 'value'
+      window.HTMLInputElement.prototype,
+      "value",
     ).set;
     nativeInputValueSetter.call(input, query);
-    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event("input", { bubbles: true }));
 
     // Press Enter
-    input.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter', code: 'Enter', keyCode: 13, bubbles: true
-    }));
+    input.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Enter",
+        code: "Enter",
+        keyCode: 13,
+        bubbles: true,
+      }),
+    );
   }
 
   function runOutlookSearch(query) {
     // Find the search input
-    const searchInput = getElementWithAriaLabelStartingWith("Search for email")
+    const searchInput = getElementWithAriaLabelStartingWith("Search for email");
     if (!searchInput) return false;
     setInputValueAndSubmit(searchInput, query);
     return true;
@@ -49,11 +56,11 @@
 
   // Read ?search= from the URL
   const params = new URLSearchParams(window.location.search);
-  const query = params.get('search');
+  const query = params.get("search");
 
-  await new Promise(r => setTimeout(r, 1000)); // ms
+  await new Promise((r) => setTimeout(r, 1000)); // ms
 
-  log(query)
+  log(query);
 
   if (query) {
     // Outlook loads dynamically, so wait for the search box to appear
@@ -66,5 +73,4 @@
     // Give up after 15 seconds
     setTimeout(() => clearInterval(interval), 15000);
   }
-
 })();

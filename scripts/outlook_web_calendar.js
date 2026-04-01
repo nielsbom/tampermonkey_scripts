@@ -1,7 +1,8 @@
 // ==UserScript==
-// @name        New script office.com
+// @name        Outlook web calendar
 // @namespace   Violentmonkey Scripts
 // @match       https://outlook.office.com/calendar/*
+// @match       https://outlook.cloud.microsoft/calendar/*
 // @grant       none
 // @version     1.0
 // @author      -
